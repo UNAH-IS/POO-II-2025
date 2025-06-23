@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+}
+
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #b6b6b6;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 5px 10px 5px 10px;
+}
+
+#img-perfil {
+    width: 45px;
+    border-radius: 100%;
+}
+
+#vidas {
+    font-size: 1.4rem;
+    color: red;
+}
+
+#coronas {
+    font-size: 1.4rem;
+    color: rgb(237 195 0);
+}
+
+#galeria-usuarios {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;;
+}
+
+.usuario img {
+    border-radius: 15px;
+    width: 100%;
+}

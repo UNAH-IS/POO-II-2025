@@ -1,0 +1,12 @@
+xml: 
+<persona>
+    <nombre>Juan</nombre>
+    <apellido>Gómez</apellido>
+    <edad>30</edad>
+    <profesión>Ingeniero de software</profesión>
+    <intereses>
+        <interés>Tecnología</interés>
+        <interés>Viajes</interés>
+        <interés>Fotografía</interés>
+    </intereses>
+</persona>
