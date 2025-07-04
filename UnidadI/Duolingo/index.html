@@ -6,6 +6,7 @@
     <title>Duolingo</title>
     <link rel="stylesheet" href="css/estilos.css">
     <script src="https://kit.fontawesome.com/9e3d5e7e85.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
     <header>
@@ -24,49 +25,78 @@
     <!-- <main>
         Bienvenido a Duolingo.
     </main> -->
-    <section>
+    <section id="usuarios">
         <h3>Usuario autenticado</h3>
         <div id="galeria-usuarios">
-            <div class="usuario">
-                <img src="img/profile-pics/goku.jpg">
-                Nombre
+            <!-- <div class="usuario" id="X">
+                X
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/videl.jpg">
-                Nombre
+            <div class="usuario" id="Y">
+                Y
+            </div> -->
+        </div>
+    </section>
+
+    <section id="categorias">
+        <div id="logo-duo">
+            <img src="img/duo.svg">
+        </div>
+        <div id="lista-categorias">
+            <!-- <div class="contenedor-categoria">
+                <div class="categoria" style="background-color: #fe9595;">
+                    <i class="fa-solid fa-people-roof"></i>
+                </div>
+                Family
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/vegeta.jpg">
-                Nombre
+            <div class="contenedor-categoria">
+                <div class="categoria" style="background-color: #fef595;">
+                    <i class="fa-solid fa-dog"></i>
+                </div>
+                Animals
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/krilin.jpg">
-                Nombre
+            <div class="contenedor-categoria">
+                <div class="categoria" style="background-color: #95feb8;">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+                Events
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/mr_satan.jpg">
-                Nombre
+            <div class="contenedor-categoria">
+                <div class="categoria aprobada" style="background-color: #cb95fe;">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                Food
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/androide_18.jpg">
-                Nombre
+            <div class="contenedor-categoria">
+                <div class="categoria" style="background-color: #95bcfe;">
+                    <i class="fa-solid fa-plane"></i>
+                </div>
+                Travel
             </div>
-            <div class="usuario">
-                <img src="img/profile-pics/dende.jpg">
-                Nombre
-            </div>
-            <div class="usuario">
-                <img src="img/profile-pics/dodoria.jpg">
-                Nombre
-            </div>
-            <div class="usuario">
-                <img src="img/profile-pics/launch.jpg">
-                Nombre
-            </div>
+            <div class="contenedor-categoria">
+                <div class="categoria" style="background-color: #fe95f5;">
+                    <i class="fa-solid fa-school"></i>
+                </div>
+                School
+            </div> -->
+        </div>
+    </section>
+
+    <section id="preguntas">
+        <div class="my-8 text-gray-500">
+            <div class="text-center text-2xl font-medium">1/5</div>
+            <div class="text-center">Traduce la siguiente palabra:</div>
+            <div class="text-center text-2xl font-medium">Hermana</div>
+        </div>
+        <div id="lista-preguntas" class="grid grid-cols-2 gap-4 m-4">
+            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Brother</div>
+            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Mother</div>
+            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Water</div>
+            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Sister</div>
         </div>
     </section>
 
     <!-- Aqui usualmente se incluyen los archivos JS -->
+    <script src="js/controlador.js"></script>
 </body>
 </html>
 

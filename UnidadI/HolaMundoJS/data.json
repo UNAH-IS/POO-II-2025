@@ -1,0 +1,18 @@
+[
+    {
+        "nombre": "PEdro",
+        "apellido": "Perez",
+        "edad": 30,
+        "esEstudiante": true,
+        "calificaciones": [10, 9, 8, 7],
+        "PI": 3.14159
+    },
+    {
+        "nombre": "Juan",
+        "apellido": "Gomez",
+        "edad": 25,
+        "esEstudiante": false,
+        "calificaciones": [9, 8, 7, 6],
+        "PI": 3.14
+    }
+]

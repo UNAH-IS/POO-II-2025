@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="titulo">Hola Mundo JavaScript</h1>
+    <section id="contenido">
+
+    </section>
+    <section>
+        <button type="button" id="btn" onclick="mostrarMensaje()">Click Me</button>
+    </section>
+    <!--  -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript">
+        const mostrarMensaje = () => {
+            alert("Hola Mundo JavaScript desde el DOM");
+            document.getElementById("titulo").innerHTML = "Hola Mundo JavaScript desde el DOM";    
+        
+            for (let i = 0; i < 10; i++) {
+                document.getElementById("contenido").innerHTML += `<p>Este es el párrafo número ${i + 1}</p>`;
+            }
+        };
+
+
+        
+    </script>
+    <script type="text/javascript">
+        // console.log("Hola " + nombre + ", tienes " + edad + " años.");
+        console.log(`Hola ${nombre} ${apellido} tienes ${edad}  años.`);
+        saludar();
+        console.log(`El valor de PI es: ${PI}`);
+        //console.log(`X: ${x}`); // Esto causará un error porque x no está definida en este ámbito	
+        
+        // JavaScriptObjectNotation
+        const persona = {
+            nombre: "Pedro",
+            apellido: "Gonzalez",
+            edad: 25,
+            esEstudiante: true,
+            calificaciones: [10, 9, 8, 7],
+            carrera: {
+                codigo: "CS101",
+                nombre: "Ciencias de la Computación",
+                creditos: 120
+            }
+        };
+        
+        persona.nombre = "Juan";
+
+        console.log(`Nombre ->>>>>>> ${persona.nombre}`);
+        console.log(persona);
+
+        persona.nombre = "Juan";
+
+        for (let i = 0; i < calificaciones.length; i++) {
+            console.log(`Calificación ${i + 1}: ${calificaciones[i]}`);
+        }
+    </script>
+</body>
+</html>
