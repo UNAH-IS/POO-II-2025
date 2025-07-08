@@ -11,7 +11,9 @@
 <body>
     <header>
         <nav id = "navbar">
-            <div><img id="img-perfil" src="img/profile-pics/goku.jpg"></div>
+            <div>
+                <img id="img-perfil" src="img/profile-pics/placeholder.png" onclick="mostrarListaUsuarios()">
+            </div>
             <div id="coronas">
                 <i class="fa-solid fa-crown"></i>
                 <span>3</span>
@@ -85,13 +87,15 @@
         <div class="my-8 text-gray-500">
             <div class="text-center text-2xl font-medium">1/5</div>
             <div class="text-center">Traduce la siguiente palabra:</div>
-            <div class="text-center text-2xl font-medium">Hermana</div>
+            <div class="text-center text-2xl font-medium" id="titulo-pregunta"></div>
         </div>
         <div id="lista-preguntas" class="grid grid-cols-2 gap-4 m-4">
-            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Brother</div>
-            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Mother</div>
-            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Water</div>
-            <div class="opcion-respuesta rounded-lg flex justify-center items-center">Sister</div>
+            
+        </div>
+
+        <div class="flex m-4 justify-center gap-4">
+            <button type="button" class="btn-cancelar" onclick="mostrarListaCategorias()">Cancelar</button>
+            <button type="button" class="btn-pregunta">Continuar</button>
         </div>
     </section>
 

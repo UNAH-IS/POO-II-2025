@@ -151,3 +151,22 @@ body {
     color: white;
     border: 0;
 }
+
+.btn-pregunta {
+    background-color: #1ac71a;
+    color: white;
+    border: 0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.btn-cancelar {
+    background-color: #1ac71a;
+    color: white;
+    border: 0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}

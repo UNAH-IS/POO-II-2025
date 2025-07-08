@@ -566,7 +566,7 @@ for (let i = 0; i < usuarios.length; i++) {
   const usuario = usuarios[i];
   document.getElementById(
     "galeria-usuarios"
-  ).innerHTML += `<div class="usuario">
+  ).innerHTML += `<div class="usuario" onclick="seleccionarUsuario(${usuario.id}, '${usuario.nombre}', '${usuario.imagenPerfil}')">
             <img src="img/${usuario.imagenPerfil}">
             ${usuario.nombre}
          </div>
@@ -579,13 +579,64 @@ for (let i = 0; i < categorias.length; i++) {
     document.getElementById(
         "lista-categorias"
     ).innerHTML += `
-        <div class="contenedor-categoria">
-            <div class="categoria" style="background-color: ${categoria.color};">
+        <div class="contenedor-categoria" onclick="seleccionarCategoria(${categoria.id}); mostrarListaPreguntas();">
+            <div id="${categoria.id}" class="categoria" style="background-color: ${categoria.color};">
                 <i class="${categoria.icono}"></i>
             </div>
             ${categoria.nombre}
         </div>` ;
 }
+
+
+const mostrarListaUsuarios = () => {
+  document.getElementById("usuarios").style.display = "block";
+  document.getElementById("categorias").style.display = "none";
+  document.getElementById("preguntas").style.display = "none";
+}
+
+const mostrarListaCategorias = () => {
+  document.getElementById("usuarios").style.display = "none";
+  document.getElementById("categorias").style.display = "block";
+  document.getElementById("preguntas").style.display = "none";
+}
+
+const mostrarListaPreguntas = () => {
+  document.getElementById("usuarios").style.display = "none";
+  document.getElementById("categorias").style.display = "none";
+  document.getElementById("preguntas").style.display = "block";
+}
+const seleccionarUsuario = (id, nombre, urlImagen) => {
+  // console.log("Se seleccionó el usuario con ID: " + id);
+  // console.log("Se seleccionó el usuario con Nombre: " + nombre);
+  // console.log("Se seleccionó el usuario con urlImagen: " + urlImagen);
+
+  document.getElementById("img-perfil").setAttribute("src", "img/"+urlImagen);
+  mostrarListaCategorias();
+
+  const usuarioSeleccionado = usuarios.find(u => u.id == id);
+  usuarioSeleccionado.resultados.forEach(r => {
+    //Este codigo se ejecuta por cada objeto del arreglo resultados
+    document.getElementById(r.category).classList.remove("aprobada");
+    if (r.aprobada) {
+      document.getElementById(r.category).classList.add("aprobada");
+    }
+  });
+  console.log("Usuario Seleccionado ", usuarioSeleccionado);
+}
+
+
+const seleccionarCategoria = (idCategoria) => {
+  const categoriaSeleccionada = categorias.find(c => c.id == idCategoria);
+  console.log("Categoria Seleccionada ", categoriaSeleccionada);
+  const primerPregunta = categoriaSeleccionada.preguntas[0];
+  document.getElementById("titulo-pregunta").innerHTML = primerPregunta.palabra;
+  document.getElementById('lista-preguntas').innerHTML = ''; //Limpia la lista de preguntas
+  primerPregunta.respuestas.forEach(r => {
+      document.getElementById('lista-preguntas').innerHTML += `<div class="opcion-respuesta rounded-lg flex justify-center items-center">${r.palabra}</div>`;
+  });
+  
+}
+// seleccionarUsuario(6, 'Trunks', 'profile-pics/trunks.jpg');
 
 //Shift + Ctrl + P ==> Se abre el panel de comandos
 // Buscar Format Document
