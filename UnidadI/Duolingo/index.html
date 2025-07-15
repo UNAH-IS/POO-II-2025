@@ -16,11 +16,11 @@
             </div>
             <div id="coronas">
                 <i class="fa-solid fa-crown"></i>
-                <span>3</span>
+                <span>0</span>
             </div>
             <div id="vidas">
                 <i class="fa-solid fa-heart"></i>
-                <span>5</span>
+                <span>0</span>
             </div>
         </nav>
     </header>
@@ -85,17 +85,19 @@
 
     <section id="preguntas">
         <div class="my-8 text-gray-500">
-            <div class="text-center text-2xl font-medium">1/5</div>
+            <div class="text-center text-2xl font-medium" id="contador-pregunta">
+                
+            </div>
             <div class="text-center">Traduce la siguiente palabra:</div>
             <div class="text-center text-2xl font-medium" id="titulo-pregunta"></div>
         </div>
-        <div id="lista-preguntas" class="grid grid-cols-2 gap-4 m-4">
+        <div id="lista-respuestas" class="grid grid-cols-2 gap-4 m-4">
             
         </div>
 
         <div class="flex m-4 justify-center gap-4">
             <button type="button" class="btn-cancelar" onclick="mostrarListaCategorias()">Cancelar</button>
-            <button type="button" class="btn-pregunta">Continuar</button>
+            <button type="button" class="btn-pregunta" onclick="renderizarPregunta(preguntaActual+1)">Continuar</button>
         </div>
     </section>
 

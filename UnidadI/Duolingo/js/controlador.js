@@ -244,6 +244,10 @@ var usuarios = [
   },
 ];
 
+if (!localStorage.getItem("usuarios")) {
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
 var categorias = [
   {
     id: 1,
@@ -291,6 +295,72 @@ var categorias = [
           },
           {
             palabra: "Java",
+            correcta: false,
+          },
+        ],
+      },
+      {
+        id: 3,
+        palabra: "Padre",
+        respuestas: [
+          {
+            palabra: "Father",
+            correcta: true,
+          },
+          {
+            palabra: "Mother",
+            correcta: false,
+          },
+          {
+            palabra: "Water",
+            correcta: false,
+          },
+          {
+            palabra: "Sister",
+            correcta: false,
+          },
+        ],
+      },
+      {
+        id: 4,
+        palabra: "Madre",
+        respuestas: [
+          {
+            palabra: "Brother",
+            correcta: false,
+          },
+          {
+            palabra: "Mother",
+            correcta: true,
+          },
+          {
+            palabra: "Water",
+            correcta: false,
+          },
+          {
+            palabra: "Sister",
+            correcta: false,
+          },
+        ],
+      },
+      {
+        id: 5,
+        palabra: "Hijo",
+        respuestas: [
+          {
+            palabra: "Son",
+            correcta: true,
+          },
+          {
+            palabra: "Mother",
+            correcta: false,
+          },
+          {
+            palabra: "Water",
+            correcta: false,
+          },
+          {
+            palabra: "Sister",
             correcta: false,
           },
         ],
@@ -364,15 +434,15 @@ var categorias = [
             correcta: true,
           },
           {
-            palabra: "Drink",
+            palabra: "Chicken",
             correcta: false,
           },
           {
-            palabra: "Water",
+            palabra: "Tomato",
             correcta: false,
           },
           {
-            palabra: "Coffee",
+            palabra: "Pie",
             correcta: false,
           },
         ],
@@ -382,7 +452,7 @@ var categorias = [
         palabra: "Agua",
         respuestas: [
           {
-            palabra: "Food",
+            palabra: "Petroleum",
             correcta: false,
           },
           {
@@ -559,6 +629,30 @@ var categorias = [
     },
 ];
 
+if (!localStorage.getItem("categorias")) {
+  localStorage.setItem("categorias", JSON.stringify(categorias));
+}
+
+var preguntaActual = 0;
+var categoriaSeleccionada = null;
+var usuarioActual = null; // Variable global para rastrear el usuario actual
+var respuestasCorrectas = 0;
+var respuestasIncorrectas = 0;
+var preguntaActualContestada = false;
+
+// Función para actualizar las vidas en la interfaz
+const actualizarVidas = () => {
+  if (usuarioActual) {
+    document.querySelector("#vidas span").textContent = usuarioActual.vidas;
+  }
+}
+
+const actualizarCoronas = () => {
+  if (usuarioActual) {
+    document.querySelector("#coronas span").textContent = usuarioActual.coronas;
+  }
+}
+
 console.log(usuarios);
 console.log(categorias);
 
@@ -595,6 +689,8 @@ const mostrarListaUsuarios = () => {
 }
 
 const mostrarListaCategorias = () => {
+  preguntaActual = 0;
+  categoriaSeleccionada = null;
   document.getElementById("usuarios").style.display = "none";
   document.getElementById("categorias").style.display = "block";
   document.getElementById("preguntas").style.display = "none";
@@ -614,28 +710,111 @@ const seleccionarUsuario = (id, nombre, urlImagen) => {
   mostrarListaCategorias();
 
   const usuarioSeleccionado = usuarios.find(u => u.id == id);
-  usuarioSeleccionado.resultados.forEach(r => {
-    //Este codigo se ejecuta por cada objeto del arreglo resultados
-    document.getElementById(r.category).classList.remove("aprobada");
+  usuarioActual = usuarioSeleccionado; // Actualiza el usuario actual
+  marcarCategoriasAprobadas();
+  actualizarVidas(); // Actualiza las vidas en la interfaz
+  actualizarCoronas(); // Actualiza las coronas en la interfaz
+  console.log("Usuario Seleccionado ", usuarioSeleccionado);
+}
+
+marcarCategoriasAprobadas = () => {
+  categorias.forEach(c => {
+    document.getElementById(c.id).classList.remove("aprobada");
+  });
+
+  usuarioActual.resultados.forEach(r => {
     if (r.aprobada) {
       document.getElementById(r.category).classList.add("aprobada");
     }
   });
-  console.log("Usuario Seleccionado ", usuarioSeleccionado);
 }
 
 
 const seleccionarCategoria = (idCategoria) => {
-  const categoriaSeleccionada = categorias.find(c => c.id == idCategoria);
+  respuestasCorrectas = 0;
+  respuestasIncorrectas = 0;
+  categoriaSeleccionada = categorias.find(c => c.id == idCategoria);
   console.log("Categoria Seleccionada ", categoriaSeleccionada);
-  const primerPregunta = categoriaSeleccionada.preguntas[0];
-  document.getElementById("titulo-pregunta").innerHTML = primerPregunta.palabra;
-  document.getElementById('lista-preguntas').innerHTML = ''; //Limpia la lista de preguntas
-  primerPregunta.respuestas.forEach(r => {
-      document.getElementById('lista-preguntas').innerHTML += `<div class="opcion-respuesta rounded-lg flex justify-center items-center">${r.palabra}</div>`;
-  });
-  
+  renderizarPregunta(preguntaActual);
 }
+
+const renderizarPregunta = (indicePregunta) => {
+  preguntaActualContestada = false; // Reinicia el estado de la pregunta actual
+  document.getElementById("contador-pregunta").innerHTML = `${indicePregunta + 1}/${categoriaSeleccionada.preguntas.length}`;
+  if (indicePregunta >= categoriaSeleccionada.preguntas.length) {
+    let categoriaAprobada = false;
+    if (respuestasCorrectas == categoriaSeleccionada.preguntas.length && respuestasIncorrectas == 0) {
+      alert("¡Felicidades! Has respondido todas las preguntas correctamente.");
+      categoriaAprobada = true;
+      usuarioActual.coronas++;
+      actualizarCoronas();
+    }
+
+    let existeCategoriaResultado = false;
+    usuarioActual.resultados.forEach(r => {
+      if (r.category == categoriaSeleccionada.id) {
+        r.correctas = respuestasCorrectas;
+        r.incorrectas = respuestasIncorrectas;
+        r.aprobada = categoriaAprobada;
+        existeCategoriaResultado = true;
+      }
+    });
+
+    if (!existeCategoriaResultado) {
+      usuarioActual.resultados.push({
+        category: categoriaSeleccionada.id,
+        correctas: respuestasCorrectas,
+        incorrectas: respuestasIncorrectas,
+        aprobada: categoriaAprobada
+      });
+    }
+
+
+    marcarCategoriasAprobadas();
+    console.log("No hay más preguntas en esta categoría.");
+    mostrarListaCategorias();
+    return;
+  }
+  console.log("Renderizar la pregunta: ", indicePregunta);
+  preguntaActual = indicePregunta;
+  const pregunta = categoriaSeleccionada.preguntas[indicePregunta];
+  document.getElementById("titulo-pregunta").innerHTML = pregunta.palabra;
+  document.getElementById('lista-respuestas').innerHTML = ''; //Limpia la lista de preguntas
+  pregunta.respuestas.forEach(r => {
+      document.getElementById('lista-respuestas').innerHTML += `<div class="opcion-respuesta rounded-lg flex justify-center items-center" onclick="calificarRespuesta('${r.palabra}', ${r.correcta}, this)">${r.palabra}</div>`;
+  });
+}
+
+const calificarRespuesta = (respuestaSeleccionada, correcta, etiquetaSeleccionada) => {
+  if (preguntaActualContestada) {
+    alert("Ya has respondido esta pregunta. Por favor, selecciona otra pregunta.");
+    return;
+  }
+  document.querySelectorAll('.opcion-respuesta').forEach(e => {
+    e.classList.remove("respuesta-correcta");
+    e.classList.remove("respuesta-incorrecta");
+  });
+
+  if (correcta) {
+    etiquetaSeleccionada.classList.add("respuesta-correcta");
+    respuestasCorrectas++;
+  } else {
+    etiquetaSeleccionada.classList.add("respuesta-incorrecta");
+    respuestasIncorrectas++;
+    // Restar una vida cuando la respuesta es incorrecta
+    if (usuarioActual && usuarioActual.vidas > 0) {
+      usuarioActual.vidas--;
+      actualizarVidas();
+    }
+  }
+  console.log("Calificar respuesta, respuesta seleccionada: ", respuestaSeleccionada);
+  console.log("Es respuesta correcta: ", correcta);
+  console.log("Correctas: ", respuestasCorrectas);
+  console.log("Incorrectas: ", respuestasIncorrectas);
+  preguntaActualContestada = true;
+}
+
+
 // seleccionarUsuario(6, 'Trunks', 'profile-pics/trunks.jpg');
 
 //Shift + Ctrl + P ==> Se abre el panel de comandos
