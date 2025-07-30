@@ -1,0 +1,30 @@
+Entidades:
+    Usuarios
+    Categorias
+
+Base endpoint: http://localhost
+Operaciones
+-->    GET     /usuarios                               Obtener todos los Usuarios
+-->    GET     /usuarios/:id                           Obtener un usuario
+-->    GET     /usuarios/:id/resultados                Obtener resultados de un usuario
+-->    PUT     /usuarios/:id                           Actualizar usuario (ejemplo, coronas, vidas)
+-->    PUT     /usuarios/:id/resultados/:idCategoria   Actualizar resultado de una categoria
+-->    GET     /categorias                             Obtener todas las Categorias
+-->    GET     /categorias/:id                         Obtener una categoria
+
+
+
+Formas de consumir un API
+    Peticiones sincronas
+    Peticiones asincronas (Asyncronous Javacript And XML):
+        Librerias:
+            Axios
+            JQuery
+            Frameworks -> Angular, React
+        
+        Nativa: Fetch
+
+
+CORS (Cross Origin Resource Sharing)
+    npm install cors
+    npm install @types/cors
