@@ -123,7 +123,7 @@ export const categorias: Array<Categoria> = [
     id: 2,
     nombre: "Animals",
     icono: "fa-solid fa-dog",
-    color: "#F2C27B",
+    color: "#000000",
     preguntas: [
       {
         id: 1,

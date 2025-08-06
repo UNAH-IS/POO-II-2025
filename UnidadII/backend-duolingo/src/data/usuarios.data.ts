@@ -3,7 +3,7 @@ import { Usuario } from "../models/usuarios";
 export const usuarios: Array<Usuario> = [
   {
     id: 1,
-    nombre: "Goku",
+    nombre: "Gokuuuu",
     imagenPerfil: "profile-pics/goku.jpg",
     coronas: 2,
     vidas: 5,

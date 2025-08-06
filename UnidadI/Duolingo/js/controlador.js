@@ -1,9 +1,13 @@
 var categorias = [];
+var usuarios = [];
+var preguntaActual = 0;
+var categoriaSeleccionada = null;
+var usuarioActual = null; // Variable global para rastrear el usuario actual
+var resultadosUsuarioActual = []; // Variable para almacenar los resultados del usuario actual
+var respuestasCorrectas = 0;
+var respuestasIncorrectas = 0;
+var preguntaActualContestada = false;
 
-const requestOptions = {
-  method: "GET",
-  redirect: "follow"
-};
 
 // fetch("http://localhost:3000/categorias", requestOptions)
 //   .then((response) => {
@@ -14,303 +18,115 @@ const requestOptions = {
 
 
 const cargarCategorias = async () => {
+  const requestOptions = {
+    method: "GET"
+  };
   const respuestaCateogoriasServidor = await fetch("http://localhost:3000/categorias", requestOptions)
   categorias = await respuestaCateogoriasServidor.json();
   console.log("Categorias del servidor: ", categorias);
   renderizarCategorias();
-}
+};
+
+const cargarUsuarios = async () => {
+  const requestOptions = {
+    method: "GET"
+  };
+  const respuestaUsuariosServidor = await fetch("http://localhost:3000/usuarios", requestOptions)
+  usuarios = await respuestaUsuariosServidor.json();
+  console.log("Usuarios del servidor: ", usuarios);
+  renderizarUsuarios();
+};
+
+const cargarResultadosUsuario = async (idUsuario) => {
+  const requestOptions = {
+    method: "GET"
+  };
+  const respuestaResultadosServidor = await fetch(`http://localhost:3000/usuarios/${idUsuario}/resultados`, requestOptions);
+  resultadosUsuarioActual = await respuestaResultadosServidor.json();
+  console.log("Resultados del usuario: ", resultadosUsuarioActual);
+
+  return resultadosUsuarioActual;
+};
+
+const actualizarResultadosUsuario = async (idUsuario, resultados) => {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(resultados)
+  };
+
+  const respuestaActualizacion = await fetch(`http://localhost:3000/usuarios/${idUsuario}/resultados/${resultados.category}`, requestOptions);
+  if (respuestaActualizacion.ok) {
+    const resultadoActualizado = await respuestaActualizacion.json();
+    const indiceCategoria = resultadosUsuarioActual.findIndex(r => r.category === resultados.category);
+
+    if (indiceCategoria !== -1) {
+      // Actualiza el resultado existente
+      resultadosUsuarioActual[indiceCategoria].correctas = resultados.correctas;
+      resultadosUsuarioActual[indiceCategoria].incorrectas = resultados.incorrectas;
+      resultadosUsuarioActual[indiceCategoria].aprobada = resultados.aprobada;
+    } else {
+      // Agrega un nuevo resultado
+      resultadosUsuarioActual.push(resultadoActualizado);
+    }
+
+    console.log("Resultados actualizados correctamente", resultadoActualizado);
+  } else {
+    console.error("Error al actualizar los resultados del usuario");
+  }
+};  
 
 cargarCategorias();
-
-
-var usuarios = [
-  {
-    id: 1,
-    nombre: "Goku",
-    imagenPerfil: "profile-pics/goku.jpg",
-    coronas: 2,
-    vidas: 5,
-    resultados: [
-      {
-        category: 1,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-    ],
-  },
-  {
-    id: 2,
-    nombre: "Vegeta",
-    imagenPerfil: "profile-pics/vegeta.jpg",
-    coronas: 3,
-    vidas: 4,
-    resultados: [
-      {
-        category: 1,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 2,
-        correctas: 3,
-        incorrectas: 2,
-        aprobada: false,
-      },
-      {
-        category: 3,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-    ],
-  },
-  {
-    id: 3,
-    nombre: "Bulma",
-    imagenPerfil: "profile-pics/bulma.jpg",
-    coronas: 1,
-    vidas: 6,
-    resultados: [
-      {
-        category: 1,
-        correctas: 2,
-        incorrectas: 3,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-    ],
-  },
-  {
-    id: 4,
-    nombre: "Piccolo",
-    imagenPerfil: "profile-pics/picoro.jpg",
-    coronas: 2,
-    vidas: 5,
-    resultados: [
-      {
-        category: 1,
-        correctas: 3,
-        incorrectas: 2,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-    ],
-  },
-  {
-    id: 5,
-    nombre: "Krillin",
-    imagenPerfil: "profile-pics/krilin.jpg",
-    coronas: 3,
-    vidas: 4,
-    resultados: [
-      {
-        category: 1,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 2,
-        correctas: 2,
-        incorrectas: 3,
-        aprobada: false,
-      },
-      {
-        category: 3,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-    ],
-  },
-  {
-    id: 6,
-    nombre: "Trunks",
-    imagenPerfil: "profile-pics/trunks.jpg",
-    coronas: 1,
-    vidas: 6,
-    resultados: [
-      {
-        category: 1,
-        correctas: 2,
-        incorrectas: 3,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-    ],
-  },
-  {
-    id: 7,
-    nombre: "Frieza",
-    imagenPerfil: "profile-pics/freezer.jpg",
-    coronas: 2,
-    vidas: 5,
-    resultados: [
-      {
-        category: 1,
-        correctas: 3,
-        incorrectas: 2,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-    ],
-  },
-  {
-    id: 8,
-    nombre: "Cell",
-    imagenPerfil: "profile-pics/cell.jpg",
-    coronas: 3,
-    vidas: 4,
-    resultados: [
-      {
-        category: 1,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-      {
-        category: 2,
-        correctas: 2,
-        incorrectas: 3,
-        aprobada: false,
-      },
-      {
-        category: 3,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: false,
-      },
-    ],
-  },
-  {
-    id: 9,
-    nombre: "Majin Buu",
-    imagenPerfil: "profile-pics/patricio.jpg",
-    coronas: 1,
-    vidas: 6,
-    resultados: [
-      {
-        category: 1,
-        correctas: 2,
-        incorrectas: 3,
-        aprobada: false,
-      },
-      {
-        category: 2,
-        correctas: 4,
-        incorrectas: 1,
-        aprobada: true,
-      },
-      {
-        category: 3,
-        correctas: 5,
-        incorrectas: 0,
-        aprobada: true,
-      },
-    ],
-  },
-];
-
-if (!localStorage.getItem("usuarios")) {
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-}
-
-
-
-if (!localStorage.getItem("categorias")) {
-  localStorage.setItem("categorias", JSON.stringify(categorias));
-}
-
-var preguntaActual = 0;
-var categoriaSeleccionada = null;
-var usuarioActual = null; // Variable global para rastrear el usuario actual
-var respuestasCorrectas = 0;
-var respuestasIncorrectas = 0;
-var preguntaActualContestada = false;
+cargarUsuarios();
 
 // Función para actualizar las vidas en la interfaz
-const actualizarVidas = () => {
+const actualizarVidas = async () => {
   if (usuarioActual) {
-    document.querySelector("#vidas span").textContent = usuarioActual.vidas;
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ vidas: usuarioActual.vidas })
+    };
+    const resultado = await fetch(`http://localhost:3000/usuarios/${usuarioActual.id}`, requestOptions);
+    if (resultado.ok) {
+      document.querySelector("#vidas span").textContent = usuarioActual.vidas;
+    }
   }
 }
 
-const actualizarCoronas = () => {
+const actualizarCoronas = async () => {
   if (usuarioActual) {
-    document.querySelector("#coronas span").textContent = usuarioActual.coronas;
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ coronas: usuarioActual.coronas })
+    };
+    const resultado = await fetch(`http://localhost:3000/usuarios/${usuarioActual.id}`, requestOptions);
+    if (resultado.ok) {
+      document.querySelector("#coronas span").textContent = usuarioActual.coronas;
+    }
   }
 }
 
-console.log(usuarios);
-
-for (let i = 0; i < usuarios.length; i++) {
-  const usuario = usuarios[i];
-  document.getElementById(
-    "galeria-usuarios"
-  ).innerHTML += `<div class="usuario" onclick="seleccionarUsuario(${usuario.id}, '${usuario.nombre}', '${usuario.imagenPerfil}')">
-            <img src="img/${usuario.imagenPerfil}">
-            ${usuario.nombre}
-         </div>
-        `;
+const renderizarUsuarios = () => {
+  for (let i = 0; i < usuarios.length; i++) {
+    const usuario = usuarios[i];
+    document.getElementById(
+      "galeria-usuarios"
+    ).innerHTML += `<div class="usuario" onclick="seleccionarUsuario(${usuario.id}, '${usuario.nombre}', '${usuario.imagenPerfil}')">
+              <img src="img/${usuario.imagenPerfil}">
+              ${usuario.nombre}
+          </div>
+          `;
+  }
 }
+
 
 const renderizarCategorias = () => {
   for (let i = 0; i < categorias.length; i++) {
@@ -347,10 +163,11 @@ const mostrarListaPreguntas = () => {
   document.getElementById("categorias").style.display = "none";
   document.getElementById("preguntas").style.display = "block";
 }
-const seleccionarUsuario = (id, nombre, urlImagen) => {
+const seleccionarUsuario = async (id, nombre, urlImagen) => {
   // console.log("Se seleccionó el usuario con ID: " + id);
   // console.log("Se seleccionó el usuario con Nombre: " + nombre);
   // console.log("Se seleccionó el usuario con urlImagen: " + urlImagen);
+  await cargarResultadosUsuario(id); //asincrona
 
   document.getElementById("img-perfil").setAttribute("src", "img/"+urlImagen);
   mostrarListaCategorias();
@@ -368,7 +185,7 @@ marcarCategoriasAprobadas = () => {
     document.getElementById(c.id).classList.remove("aprobada");
   });
 
-  usuarioActual.resultados.forEach(r => {
+  resultadosUsuarioActual.forEach(r => {
     if (r.aprobada) {
       document.getElementById(r.category).classList.add("aprobada");
     }
@@ -384,10 +201,11 @@ const seleccionarCategoria = (idCategoria) => {
   renderizarPregunta(preguntaActual);
 }
 
-const renderizarPregunta = (indicePregunta) => {
+const renderizarPregunta = async (indicePregunta) => {
   preguntaActualContestada = false; // Reinicia el estado de la pregunta actual
   document.getElementById("contador-pregunta").innerHTML = `${indicePregunta + 1}/${categoriaSeleccionada.preguntas.length}`;
   if (indicePregunta >= categoriaSeleccionada.preguntas.length) {
+    //Significa que ya no hay más preguntas y que se debe actualizar el resultado.
     let categoriaAprobada = false;
     if (respuestasCorrectas == categoriaSeleccionada.preguntas.length && respuestasIncorrectas == 0) {
       alert("¡Felicidades! Has respondido todas las preguntas correctamente.");
@@ -396,25 +214,12 @@ const renderizarPregunta = (indicePregunta) => {
       actualizarCoronas();
     }
 
-    let existeCategoriaResultado = false;
-    usuarioActual.resultados.forEach(r => {
-      if (r.category == categoriaSeleccionada.id) {
-        r.correctas = respuestasCorrectas;
-        r.incorrectas = respuestasIncorrectas;
-        r.aprobada = categoriaAprobada;
-        existeCategoriaResultado = true;
-      }
+    await actualizarResultadosUsuario(usuarioActual.id, {
+      category: categoriaSeleccionada.id,
+      correctas: respuestasCorrectas,
+      incorrectas: respuestasIncorrectas,
+      aprobada: categoriaAprobada
     });
-
-    if (!existeCategoriaResultado) {
-      usuarioActual.resultados.push({
-        category: categoriaSeleccionada.id,
-        correctas: respuestasCorrectas,
-        incorrectas: respuestasIncorrectas,
-        aprobada: categoriaAprobada
-      });
-    }
-
 
     marcarCategoriasAprobadas();
     console.log("No hay más preguntas en esta categoría.");

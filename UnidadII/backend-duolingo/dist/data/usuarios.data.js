@@ -4,7 +4,7 @@ exports.usuarios = void 0;
 exports.usuarios = [
     {
         id: 1,
-        nombre: "Goku",
+        nombre: "Gokuuuu",
         imagenPerfil: "profile-pics/goku.jpg",
         coronas: 2,
         vidas: 5,
